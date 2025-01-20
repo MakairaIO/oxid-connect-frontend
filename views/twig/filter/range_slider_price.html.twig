@@ -1,0 +1,40 @@
+{% set oActCurrency = oView.getActCurrency() %}
+{% set sCurrencySign = oActCurrency.sign %}
+
+<div class="makaira-filter__slider-container">
+    {% set fromname = oViewConf.getFilterParamName()|cat("[")|cat(aggregation.key)|cat("_from_price]") %}
+    {% set toname = oViewConf.getFilterParamName()|cat("[")|cat(aggregation.key)|cat("_to_price]") %}
+    {% set dataMin = oViewConf.toCurrency(aggregation.min) %}
+    {% set dataMax = oViewConf.toCurrency(aggregation.max) %}
+    {% if aggregation.selectedValues %}
+        {% set dataLeft = oViewConf.toCurrency(aggregation.selectedValues.from) %}
+        {% set dataRight = oViewConf.toCurrency(aggregation.selectedValues.to) %}
+    {% else %}
+        {% set dataLeft = dataMin %}
+        {% set dataRight = dataMax %}
+    {% endif %}
+
+    <input type="hidden" class="makaira-filter__input--min" name="{{ fromname }}" value="{{ dataMin }}" />
+    <input type="hidden" class="makaira-filter__input--max" name="{{ toname }}" value="{{ dataMax }}" />
+    {# TODO Handle min max check in js and remove additional inputs #}
+    {% set maxname = oViewConf.getFilterParamName()|cat("[")|cat(aggregation.key)|cat("_rangemax]") %}
+    {% set minname = oViewConf.getFilterParamName()|cat("[")|cat(aggregation.key)|cat("_rangemin]") %}
+    <input type="hidden" name="{{ minname }}" value="{{ dataMin|round(0, 'floor') }}" />
+    <input type="hidden" name="{{ maxname }}" value="{{ dataMax|round(0, 'ceil') }}" />
+
+    <p class="makaira-filter__slider-values">
+        <span class="makaira-filter__symbol--currency">{{ sCurrencySign }}</span>
+        <span class="makaira-filter__value--min"></span>
+        <span class="makaira-filter__symbol--until">-</span>
+        <span class="makaira-filter__symbol--currency">{{ sCurrencySign }}</span>
+        <span class="makaira-filter__value--max"></span>
+    </p>
+    <div
+        class="makaira-filter__range-slider"
+        data-min="{{ dataMin }}"
+        data-max="{{ dataMax }}"
+        data-left="{{ dataLeft }}"
+        data-right="{{ dataRight }}"
+    >
+    </div>
+</div>

@@ -1,0 +1,9 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block base_style %}
+    {{ parent() }}
+
+    {% if oViewConfig. %}
+    {% include "@makaira_oxid-connect-full/recommendations/ecaonda.html.twig" %}
+
+{% endblock %}

@@ -1,0 +1,6 @@
+{% extends "page/search/search.html.twig" %}
+
+{% block search_top_listlocator %}
+    {{ parent() }}
+    {% include "@makaira_oxid-connect-full/filter/base.html.twig" %}
+{% endblock %}

@@ -1,0 +1,65 @@
+.makaira-autosuggestion
+  position absolute
+  top 100%
+  left 0
+  z-index 9999
+  background-color #fff
+
+.makaira-autosuggestion__list
+  list-style-type none
+  padding 0
+  margin 0
+  border 1px solid #ececec
+  box-shadow 0px 2px 4px 0 #8A8A8A
+
+.makaira-autosuggestion__list-item
+
+  &--header
+    padding 5px 15px
+    background-color #efefef
+    color #009EC0
+
+  &--product
+    border-bottom 1px solid #ddd 
+    padding-bottom 15px
+    margin 10px 15px
+
+  &--manufacturer
+    margin 0 15px
+
+  &--category
+  &--link
+  &--suggestion
+    margin 5px 0
+
+  // last-child = "Show all Results"
+  &--show-all
+    margin 15px
+    text-align right
+
+.makaira-autosuggestion__submit
+  background-color transparent
+  border none
+  margin 0
+  padding 0
+
+  &:hover
+    text-decoration underline
+
+.makaira-autosuggestion__link
+  display flex
+  align-items center
+
+.makaira-autosuggestion__image
+  flex 0 0 60px
+  display flex
+  justify-content center
+  align-items center
+
+  img
+    max-height 50px
+    max-width 50px
+
+.makaira-autosuggestion__title
+  margin-left 15px
+  pointer-events none

@@ -1,0 +1,34 @@
+{% set oActCurrency = oView.getActCurrency() %}
+{% set sCurrencySign = oActCurrency.sign %}
+{% set filterParamerterName = oViewConf.getFilterParamName() %}
+
+<div class="makaira-filter__slider-container">
+    {% set dataLeft = aggregation.min %}
+    {% set dataRight = aggregation.max %}
+    {% if aggregation.selectedValues %}
+        {% set dataLeft = aggregation.selectedValues.from %}
+        {% set dataRight = aggregation.selectedValues.to %}
+    {% endif %}
+
+    <input type="hidden" class="makaira-filter__input--min" name="{{ filterParamerterName }}[{{ aggregation.key }}_from]" value="{{ aggregation.min }}" />
+    <input type="hidden" class="makaira-filter__input--max" name="{{ filterParamerterName }}[{{ aggregation.key }}_to]" value="{{ aggregation.max }}" />
+    {# TODO Handle min max check in js and remove additional inputs #}
+    <input type="hidden" name="{{ filterParamerterName }}[{{ aggregation.key }}_rangemin]" value="{{ aggregation.min|round(0, 'floor') }}" />
+    <input type="hidden" name="{{ filterParamerterName }}[{{ aggregation.key }}_rangemax]" value="{{ aggregation.max|round(0, 'ceil') }}" />
+
+    <p class="makaira-filter__slider-values">
+        <span class="makaira-filter__symbol--currency">{{ sCurrencySign }}</span>
+        <span class="makaira-filter__value--min"></span>
+        <span class="makaira-filter__symbol--until">-</span>
+        <span class="makaira-filter__symbol--currency">{{ sCurrencySign }}</span>
+        <span class="makaira-filter__value--max"></span>
+    </p>
+    <div
+        class="makaira-filter__range-slider"
+        data-min="{{ aggregation.min }}"
+        data-max="{{ aggregation.max }}"
+        data-left="{{ dataLeft }}"
+        data-right="{{ dataRight }}"
+    >
+    </div>
+</div>

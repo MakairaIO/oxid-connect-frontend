@@ -1,0 +1,5 @@
+{% if isMakairaSearchEnabled %}
+    {% include "makaira/results/search.html.twig" %}
+    {% include "makaira/filter/base.html.twig" %}
+{% endif %}
+{{ parent() }}

@@ -1,0 +1,86 @@
+parameters:
+  makaira.connect.id: 'makaira_oxid-connect-full'
+  makaira.connect-essential.id: 'makaira_oxid-connect-essential'
+
+services:
+  _defaults:
+    public: true
+    autowire: true
+    autoconfigure: true
+    bind:
+      OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServiceInterface $connectSettings: '@Makaira\OxidConnect\Helper\ModuleSettings'
+      OxidEsales\Eshop\Core\ViewConfig $oxidViewConfig: "@oxid.view-config"
+
+  Makaira\OxidConnect\:
+    resource: 'src/'
+    exclude: 'src/{Domain,Exception,Oxid,Controller,Personalization}'
+
+  Makaira\HttpClient:
+    alias: Makaira\HttpClient\Signing
+
+  Makaira\HttpClient\Curl:
+    bind:
+      $timeout: '@=service("Makaira\\OxidConnect\\Helper\\ModuleSettings").getInteger("makaira_connect_timeout")'
+
+  Makaira\OxidConnect\HttpClient\BaseUrl:
+    bind:
+      $baseUrl: '@=service("Makaira\\OxidConnect\\Helper\\ModuleSettings").getString("makaira_application_url")'
+      $httpClient: '@Makaira\HttpClient\Curl'
+
+  Makaira\OxidConnect\HttpClient\Instance:
+    bind:
+      $instance: '@=service("Makaira\\OxidConnect\\Helper\\ModuleSettings").getString("makaira_instance")'
+      $httpClient: '@Makaira\OxidConnect\HttpClient\BaseUrl'
+
+  Makaira\OxidConnect\HttpClient\Trace:
+    bind:
+      $httpClient: '@Makaira\OxidConnect\HttpClient\Instance'
+
+  Makaira\HttpClient\Signing:
+    bind:
+      $sharedSecret: '@=service("Makaira\\OxidConnect\\Helper\\ModuleSettings").getString("makaira_connect_secret", parameter("makaira.connect-essential.id"))'
+      $aggregate: '@Makaira\OxidConnect\HttpClient\Trace'
+
+  Makaira\OxidConnect\HttpClient\Json:
+    bind:
+      $httpClient: '@Makaira\HttpClient'
+
+  Makaira\OxidConnect\Service\RecommendationHandler:
+    bind:
+      $httpClient: '@Makaira\OxidConnect\HttpClient\Json'
+
+  Makaira\OxidConnect\Helper\ModuleSettings:
+    bind:
+      $moduleId: "%makaira.connect.id%"
+
+  Makaira\OxidConnect\Helper\Cookies:
+    bind:
+      string $filterParameterName: '@=service("Makaira\\OxidConnect\\Helper\\ModuleSettings").getString("makaira_connect_url_param")'
+      bool $cookieBannerEnabled: '@=service("Makaira\\OxidConnect\\Helper\\ModuleSettings").getBoolean("makaira_cookie_banner_enabled")'
+
+  Makaira\OxidConnect\Twig\AssetsExtension:
+    bind:
+      $moduleId: "%makaira.connect.id%"
+    tags:
+      - { name: "twig.extension" }
+
+  Makaira\OxidConnect\Helper\OxidSettingsInterface:
+    alias: Makaira\OxidConnect\Helper\OxidSettings
+
+  Makaira\OxidConnect\Helper\OxidSettings:
+    factory: [null, 'create']
+
+  Makaira\OxidConnect\Utils\CategoryInheritance:
+    bind:
+      bool $useCategoryInheritance: '@=service("Makaira\\OxidConnect\\Helper\\ModuleSettings").getBoolean("makaira_connect_category_inheritance")'
+      string $categoryAggregationId: '@=service("Makaira\\OxidConnect\\Helper\\ModuleSettings").getString("makaira_connect_categorytree_id")'
+
+  oxid.utils-object:
+    class: OxidEsales\Eshop\Core\UtilsObject
+    factory: 'OxidEsales\Eshop\Core\UtilsObject::getInstance'
+
+  oxid.view-config:
+    class: OxidEsales\Eshop\Core\ViewConfig
+    factory: ["@oxid.utils-object", "oxNew"]
+    arguments:
+      - 'OxidEsales\Eshop\Core\ViewConfig'

@@ -1,0 +1,71 @@
+{% set activeClass = oViewConf.getActiveClassname() %}
+
+{% if activeClass == "alist"  %}
+    {% set baseLink = oView.getLinkWithCategory() %}
+{% elseif activeClass == "manufacturerlist"  %}
+    {% set act_manf = oView.getActManufacturer() %}
+    {% set baseLink = oView.getLinkWithCategory() %}
+{% elseif activeClass == "details"  %}
+    {% set oActProduct = oView.getProduct() %}
+    {% set baseLink = oActProduct.getLink() %}
+{% elseif activeClass == "search" %}
+    {% set baseLink = oViewConf.getSelfActionLink()|cat("cl=search&searchparam=")|cat(oView.getSearchParamForHtml()) %}
+{% else %}
+    {% set baseLink = oView.getLink() %}
+{% endif %}
+
+{% set topActiveClass = oViewConf.getTopActiveClassName() %}
+{% set blShowDocCount = true %}
+{% set aggregations = oView.getAggregations() %}
+{% set showResetAll = false %}
+
+
+<aside class="makaira-filter">
+    {# show small header if we have other search results located above producs #}
+    {% if topActiveClass == "search"  %}
+        {% if category_result or manufacturer_result or links_result %}
+            <p class="makaira-filter__header">{{ translate({ ident: "MAKAIRA_PRODUCTS" }) }}</p>
+        {% endif %}
+    {% endif %}
+    <form class="makaira-form" action="{{ seo_url({ ident: baseLink }) }}" method="post">
+
+        <input type="hidden" name="fnc" value="redirectMakairaFilter">
+        {% if topActiveClass == "search"  %}
+            <input type="hidden" name="cl" value="{{ topActiveClass }}">
+            {{ oViewConf.getNavFormParams()|raw }}
+        {% endif %}
+
+        <input type="hidden" name="isFilterAction" value="1">
+
+        {#
+ FIXME Code from old module
+ TODO Do we really need a getter for following params? ['ldtype', '_artperpage', 'listorder', 'listorderby']
+ {% for param, value in oViewConf.getParametersForFilterSeo() %}
+ <input type="hidden" name="{{ param }}" value="{{ value }}" />
+ {% endfor %}
+ #}
+
+        {% for key, aggregation in aggregations %}
+            {% set filterTitle = aggregation.title|translate %}
+            {% if 'ERROR: Translation for' in filterTitle %}
+                {% set filterTitle = aggregation.title %}
+            {% endif %}
+
+            <section class="makaira-filter__filter makaira-filter__filter--{{ aggregation.type }}">
+                <header class="makaira-filter__filter-headline">{{ filterTitle }}</header>
+                {% include "@makaira_oxid-connect-full/filter/" ~ aggregation.type ~ ".html.twig" with {blShowDocCount: aggregation.showDocCount} %}
+                {% if not empty(aggregation.selectedValues) %}
+                    {% set showResetAll = true %}
+                    {#
+ FIXME Handle filter reset with javascript instead of links
+ <a href="{{ oViewConf.getFilterSeoLink(baseLink, aggregation.key) }}" class="marmFilterReset">{{ translate({ ident: "MAKAIRA_FILTER_RESET" }) }}</a>
+ #}
+                {% endif %}
+            </section>
+        {% endfor %}
+
+        {% if showResetAll %}
+            <a href="{{ baseLink|add_url_parameters('fnc=resetMakairaFilter') }}">{{ translate({ ident: "MAKAIRA_FILTER_RESET_ALL" }) }}</a>
+        {% endif %}
+    </form>
+</aside>

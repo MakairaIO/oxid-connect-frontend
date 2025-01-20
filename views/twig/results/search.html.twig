@@ -1,0 +1,58 @@
+{% if category_result or manufacturer_result or links_result or suggestion_result %}
+    {% if suggestion_result %}
+        <div class="makaira-search__results">
+            <p class="makaira-search__result-header">{{ translate({ ident: "MAKAIRA_SEARCHRESULT_SUGGESTION", alternative: "" }) }}</p>
+            <ul class="makaira-search__result-list">
+                {% for suggestion in suggestion_result.items %}
+                    <li class="makaira-search__result-item">
+                        <a href="{{ oViewConf.getSelfActionLink()|cat("cl=search&searchparam=")|cat(suggestion.fields.title) }}">
+                            {{  suggestion.fields.title  }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {% if category_result %}
+        <div class="makaira-search__results">
+            <p class="makaira-search__result-header">{{ translate({ ident: "MAKAIRA_SEARCHRESULT_CATEGORY", alternative: "" }) }}</p>
+            <ul class="makaira-search__result-list">
+                {% for category in category_result.items %}
+                    <li class="makaira-search__result-item">
+                        <a href="{{ seo_url({ oxid: category.id, type: "oxCategory" }) }}">
+                            {{  category.fields.category_title  }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {% if manufacturer_result %}
+        <div class="makaira-search__results">
+            <p class="makaira-search__result-header">{{ translate({ ident: "MAKAIRA_SEARCHRESULT_MANUFACTURER", alternative: "" }) }}</p>
+            <ul class="makaira-search__result-list">
+                {% for manufacturer in manufacturer_result.items %}
+                    <li class="makaira-search__result-item">
+                        <a href="{{ seo_url({ oxid: manufacturer.id, type: "oxManufacturer" }) }}">
+                            {{  manufacturer.fields.manufacturer_title }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {% if links_result %}
+        <div class="makaira-search__results">
+            <p class="makaira-search__result-header">{{ translate({ ident: "MAKAIRA_SEARCHRESULT_SEARCHLINK", alternative: "" }) }}</p>
+            <ul class="makaira-search__result-list">
+                {% for link in links_result.items %}
+                    <li class="makaira-search__result-item">
+                        <a href="{{ link.fields.url }}" {% if link.fields.isExternal %}target="_blank" rel="noreferrer noopener"{% endif %}>
+                            {{  link.fields.title  }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+{% endif %}

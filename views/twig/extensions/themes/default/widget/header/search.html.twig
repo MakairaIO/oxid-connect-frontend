@@ -1,0 +1,9 @@
+{% extends "widget/header/search.html.twig" %}
+
+{% block widget_header_search_form %}
+
+    {{ parent() }}
+
+    {% include "@makaira_oxid-connect-full/autosuggest/assets.html.twig" %}
+
+{% endblock %}

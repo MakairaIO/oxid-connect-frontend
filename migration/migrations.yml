@@ -1,0 +1,4 @@
+table_storage:
+  table_name: oxmigrations_makaira_connect
+migrations_paths:
+  'Makaira\OxidConnect\Migrations': data

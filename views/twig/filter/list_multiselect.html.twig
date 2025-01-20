@@ -1,0 +1,38 @@
+{% set hasAdditionalValues = false %}
+
+<ul class="makaira-filter__list">
+    {% for item in aggregation.values %}
+        {% if loop.index == 6 %}
+            {% set hasAdditionalValues = true %}
+            <li class="makaira-filter__item">
+                <button type="button" class="makaira-filter__button makaira-filter__button--expand">
+                     {{ translate({ ident: "MAKAIRA_FILTER_SHOW_MORE" }) }}
+                 </button>
+            </li>
+        {% endif %}
+
+        <li class="makaira-filter__item{% if item.selected %} makaira-filter__item--active{% endif %}">
+            <label class="makaira-filter__label">
+                <input
+                    type="checkbox"
+                    name="{{ oViewConf.getFilterParamName() }}[{{ aggregation.key }}][]"
+                    class="makaira-input makaira-input--checkbox"
+                    value="{{ item.key }}"
+                    {% if item.selected %}checked="checked"{% endif %}
+                />
+                {{ item.key }} {% if blShowDocCount %}({{ item.count }}){% endif %}
+            </label>
+        </li>
+
+        {% if hasAdditionalValues and loop.last %}
+            <li class="makaira-filter__item makaira-filter__item--hidden">
+                <button type="button" class="makaira-filter__button makaira-filter__button--collapse">
+                    {{ translate({ ident: "MAKAIRA_FILTER_SHOW_LESS" }) }}
+                </button>
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>
+
+
+

@@ -1,0 +1,28 @@
+<ul class="makaira-autosuggestion__list">
+
+    {# suggestions #}
+    {% if suggestions in result %}
+        {% include "@makaira_oxid-connect-full/autosuggest/types/suggestions.html.twig" with {suggestions: result.suggestions} %}
+    {% endif %}
+
+    {# categories #}
+    {% if categories in result %}
+        {% include "@makaira_oxid-connect-full/autosuggest/types/categories.html.twig" with {categories: result.categories} %}
+    {% endif %}
+
+    {# links #}
+    {% if links in result %}
+        {% include "@makaira_oxid-connect-full/autosuggest/types/links.html.twig" with {links: result.links} %}
+    {% endif %}
+
+    {# manufacturers #}
+    {% if manufacturers in result %}
+        {% include "@makaira_oxid-connect-full/autosuggest/types/manufacturers.html.twig" with {manufacturers: result.manufacturers} %}
+    {% endif %}
+
+    {# products #}
+    {% if products in result %}
+        {% include "@makaira_oxid-connect-full/autosuggest/types/products.html.twig" with {products: result.products, productCount: result.productCount} %}
+    {% endif %}
+
+</ul>

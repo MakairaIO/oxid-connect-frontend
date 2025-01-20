@@ -1,0 +1,16 @@
+<ul class="makaira-filter__list">
+    {% for item in aggregation.values %}
+    <li class="makaira-filter__item{% if item.selected %} makaira-filter__item--active{% endif %}">
+        <label class="makaira-filter__label">
+            <input
+                    type="checkbox"
+                    name="{{ oViewConf.getFilterParamName() }}[{{ aggregation.key }}]"
+                    class="makaira-input makaira-input--checkbox"
+                    value="{{ item.key }}"
+                    {% if item.selected %}checked="checked"{% endif %}
+            />
+            {# {{ item.key }} #} {% if blShowDocCount %}({{ item.count }}){% endif %}
+        </label>
+    </li>
+    {% endfor %}
+</ul>
