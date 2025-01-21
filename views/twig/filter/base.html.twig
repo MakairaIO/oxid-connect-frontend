@@ -53,7 +53,7 @@
 
             <section class="makaira-filter__filter makaira-filter__filter--{{ aggregation.type }}">
                 <header class="makaira-filter__filter-headline">{{ filterTitle }}</header>
-                {% include "@makaira_oxid-connect-full/filter/" ~ aggregation.type ~ ".html.twig" with {blShowDocCount: aggregation.showDocCount} %}
+                {% include "@makaira_oxid-connect-frontend/filter/" ~ aggregation.type ~ ".html.twig" with {blShowDocCount: aggregation.showDocCount} %}
                 {% if not empty(aggregation.selectedValues) %}
                     {% set showResetAll = true %}
                     {#

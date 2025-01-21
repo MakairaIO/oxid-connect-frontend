@@ -14,7 +14,7 @@ use OxidEsales\Facts\Edition\EditionSelector;
 $sMetadataVersion = '2.1';
 
 $aModule = [
-    'id'          => 'makaira_oxid-connect-full',
+    'id'          => 'makaira_oxid-connect-frontend',
     'title'       => 'Makaira Connect',
     'thumbnail'   => 'admin/makaira.jpg',
     'version'     => '0.1.0',

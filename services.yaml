@@ -1,5 +1,5 @@
 parameters:
-  makaira.connect.id: 'makaira_oxid-connect-full'
+  makaira.connect.id: 'makaira_oxid-connect-frontend'
   makaira.connect-essential.id: 'makaira_oxid-connect-essential'
 
 services:

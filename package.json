@@ -1,5 +1,5 @@
 {
-  "name": "makaira-oxid-connect-full",
+  "name": "makaira-oxid-connect-frontend",
   "version": "1.0.0",
   "scripts": {
     "clean": "cd assets && rm -rf css/makaira*.css js/makaira*.js",

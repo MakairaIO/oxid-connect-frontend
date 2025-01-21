@@ -33,7 +33,7 @@ class Autosuggestion extends FrontendController
             $searchResult = $suggester->search($searchPhrase);
 
             echo $renderer->renderTemplate(
-                '@makaira_oxid-connect-full/autosuggest/autosuggest.html.twig',
+                '@makaira_oxid-connect-frontend/autosuggest/autosuggest.html.twig',
                 [
                     'oViewConf'    => oxNew(ViewConfig::class),
                     'result'       => $searchResult,
