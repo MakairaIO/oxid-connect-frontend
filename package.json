@@ -1,5 +1,5 @@
 {
-  "name": "makaira",
+  "name": "makaira-oxid-connect-full",
   "version": "1.0.0",
   "scripts": {
     "clean": "cd assets && rm -rf css/makaira*.css js/makaira*.js",
@@ -11,7 +11,8 @@
     "watch:styles": "cd assets && stylus --watch src/styles/index.styl --out css/makaira.css",
     "watch:scripts": "cd assets && watchify src/scripts/index.js --verbose --transform [ babelify --presets=es2015] --outfile js/makaira.js",
     "predev": "npm run clean",
-    "dev": "npm-run-all --parallel watch:*"
+    "dev": "npm-run-all --parallel watch:*",
+    "release": "semantic-release"
   },
   "browserslist": [
     "last 2 versions"
@@ -32,7 +33,13 @@
     "randomatic": "^3.0.0",
     "stylus": "^0.54.8",
     "uglify-js": "^3.12.7",
-    "watchify": "^4.0.0"
+    "watchify": "^4.0.0",
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/exec": "^5.0.0",
+    "@semantic-release/git": "^9.0.0",
+    "@semantic-release/github": "^7.2.1",
+    "@semantic-release/npm": "^7.1.1",
+    "semantic-release": "^17.4.2"
   },
   "dependencies": {
     "nouislider": "^10.1.0"

@@ -6,9 +6,16 @@
     "php": "^8.0",
     "makaira/shared-libs": "^2022.3.1"
   },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^3.68",
+    "oxid-esales/oxideshop-ce": "^7.0",
+    "phpstan/phpstan": "^2.1",
+    "phpmd/phpmd": "^2.15"
+  },
   "autoload": {
     "psr-4": {
-      "Makaira\\OxidConnect\\": "./src/"
+      "Makaira\\OxidConnect\\": "./src/",
+      "Makaira\\OxidConnect\\Oxid\\": "./oxid/"
     }
   },
   "autoload-dev": {

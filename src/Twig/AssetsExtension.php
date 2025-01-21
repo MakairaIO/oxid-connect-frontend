@@ -18,8 +18,6 @@ class AssetsExtension extends AbstractExtension
 {
     private ?string $modulePath = null;
 
-    private ?string $moduleSubPath = null;
-
     public function __construct(private string $moduleId, private ViewConfig $oxidViewConfig)
     {
     }
