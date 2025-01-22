@@ -1,6 +1,6 @@
 {
   "name": "makaira/oxid-connect-frontend",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "oxideshop-module",
   "license": "GPL-3.0-or-later",
   "require": {

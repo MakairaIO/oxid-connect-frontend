@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/MakairaIO/oxid-connect-frontend/compare/1.0.3...1.0.4) (2025-01-22)
+
+
+### Bug Fixes
+
+* Add license ([0dea5bc](https://github.com/MakairaIO/oxid-connect-frontend/commit/0dea5bc00fb2308e17019a81244863cf8391286b))
+
 ## [1.0.3](https://github.com/MakairaIO/oxid-connect-frontend/compare/1.0.2...1.0.3) (2025-01-22)
 
 
