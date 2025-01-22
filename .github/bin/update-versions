@@ -1,0 +1,4 @@
+#!/bin/bash -e
+
+sed -i -E "s/('version'\s+=>\s+').*(',)/\1${1}\2/" metadata.php
+sed -i -E 's/("version":\s+")[0-9.]+(",)/\1'${1}'\2/' composer.json

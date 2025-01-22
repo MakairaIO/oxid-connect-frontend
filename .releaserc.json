@@ -9,13 +9,7 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "sed -i -E \"s/('version'\\s+=>\\s+').*(',)/\\1${nextRelease.version}\\2/\" metadata.php"
-      }
-    ],
-    [
-      "@semantic-release/exec",
-      {
-        "prepareCmd": "sed -i -E 's/(\"version\":\\s+\")\"[^\"]+(\",)/\\1${nextRelease.version}\\2/' composer.json"
+        "prepareCmd": ".github/bin/update-versions \"${nextRelease.version}\""
       }
     ],
     [
