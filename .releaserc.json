@@ -13,6 +13,12 @@
       }
     ],
     [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "sed -i -E 's/(\"version\":\\s+\")\"[^\"]+(\",)/\\1${nextRelease.version}\\2/' composer.json"
+      }
+    ],
+    [
       "@semantic-release/git",
       {
         "assets": ["package.json", "CHANGELOG.md", "metadata.php"],
