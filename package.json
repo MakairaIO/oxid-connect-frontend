@@ -31,7 +31,7 @@
     "npm-run-all2": "^5.0.0",
     "prettier": "^1.19.1",
     "randomatic": "^3.0.0",
-    "stylus": "^0.54.8",
+    "stylus": "^0.64.0",
     "uglify-js": "^3.12.7",
     "watchify": "^4.0.0",
     "@semantic-release/changelog": "^5.0.1",
