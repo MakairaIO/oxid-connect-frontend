@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/MakairaIO/oxid-connect-frontend/compare/1.0.0...1.0.1) (2025-01-22)
+
+
+### Bug Fixes
+
+* Add version change to composer.json ([f522d83](https://github.com/MakairaIO/oxid-connect-frontend/commit/f522d8374f650f1343fe5797a935a7327600780d))
+
 # 1.0.0 (2025-01-22)
 
 
