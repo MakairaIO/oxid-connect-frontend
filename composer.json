@@ -1,6 +1,6 @@
 {
   "name": "makaira/oxid-connect-frontend",
-  "version": "0.0.1",
+  "version": "1.0.3",
   "type": "oxideshop-module",
   "require": {
     "php": "^8.0",

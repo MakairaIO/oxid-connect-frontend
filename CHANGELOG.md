@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/MakairaIO/oxid-connect-frontend/compare/1.0.2...1.0.3) (2025-01-22)
+
+
+### Bug Fixes
+
+* Add changes to git ([0512709](https://github.com/MakairaIO/oxid-connect-frontend/commit/051270908236ec882942f06e72d24338cb7f99cc))
+
 ## [1.0.2](https://github.com/MakairaIO/oxid-connect-frontend/compare/1.0.1...1.0.2) (2025-01-22)
 
 
