@@ -2,6 +2,7 @@
   "name": "makaira/oxid-connect-frontend",
   "version": "1.0.3",
   "type": "oxideshop-module",
+  "license": "GPL-3.0-or-later",
   "require": {
     "php": "^8.0",
     "makaira/shared-libs": "^2022.3.1"
