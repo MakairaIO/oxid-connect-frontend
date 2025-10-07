@@ -22,6 +22,7 @@ class Cookies
     public function __construct(
         private string $filterParameterName,
         private bool $cookieBannerEnabled,
+        private bool $personalizationEnabled,
         private Language $language
     ) {
     }
@@ -144,16 +145,12 @@ class Cookies
 
     /**
      * Return whether personalization cookies are enabled in module settings.
-     * Default: true (unless admin turned it off).
+     * Default: true
      *
      * @return bool
      */
     public function isPersonalizationEnabled(): bool
     {
-        return (bool) Registry::getConfig()->getShopConfVar(
-            'makaira_connect_personalization_enabled',
-            null,
-            oxConfig::OXMODULE_MODULE_PREFIX . 'makaira/connect'
-        );
+        return $this->personalizationEnabled;
     }
 }

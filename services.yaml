@@ -57,6 +57,7 @@ services:
     bind:
       string $filterParameterName: '@=service("Makaira\\OxidConnect\\Helper\\ModuleSettings").getString("makaira_connect_url_param")'
       bool $cookieBannerEnabled: '@=service("Makaira\\OxidConnect\\Helper\\ModuleSettings").getBoolean("makaira_cookie_banner_enabled")'
+      bool $personalizationEnabled: '@=service("Makaira\\OxidConnect\\Helper\\ModuleSettings").getBoolean("makaira_connect_personalization_enabled")'
 
   Makaira\OxidConnect\Twig\AssetsExtension:
     bind:
