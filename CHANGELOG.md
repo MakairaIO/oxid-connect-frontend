@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/MakairaIO/oxid-connect-frontend/compare/1.0.4...1.1.0) (2025-12-05)
+
+
+### Features
+
+* **Personalization:** Add opt-in setting for oi constraints ([#19](https://github.com/MakairaIO/oxid-connect-frontend/issues/19)) ([8654042](https://github.com/MakairaIO/oxid-connect-frontend/commit/86540426a859bd2cf4d10426f1d03dea5062aafb))
+
 ## [1.0.4](https://github.com/MakairaIO/oxid-connect-frontend/compare/1.0.3...1.0.4) (2025-01-22)
 
 
