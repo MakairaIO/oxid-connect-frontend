@@ -17,9 +17,12 @@ class Cookies
 {
     public const EXPERIMENTS = 'mak_experiments';
 
+    public const PERSONALIZATION_COOKIES = ['oiID','oiLocalTimeZone'];
+
     public function __construct(
         private string $filterParameterName,
         private bool $cookieBannerEnabled,
+        private bool $personalizationEnabled,
         private Language $language
     ) {
     }
@@ -74,6 +77,10 @@ class Cookies
         bool $httpOnly = true,
 
     ): bool {
+        if (in_array($name, self::PERSONALIZATION_COOKIES, true) && !$this->isPersonalizationEnabled()) {
+            return false;
+        }
+
         if ($this->cookiesAccepted()) {
             return Registry::getUtilsServer()->setOxCookie(
                 $name,
@@ -134,5 +141,16 @@ class Cookies
     public function cookieBannerEnabled(): bool
     {
         return $this->cookieBannerEnabled;
+    }
+
+    /**
+     * Return whether personalization cookies are enabled in module settings.
+     * Default: true
+     *
+     * @return bool
+     */
+    public function isPersonalizationEnabled(): bool
+    {
+        return $this->personalizationEnabled;
     }
 }
