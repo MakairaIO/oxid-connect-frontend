@@ -64,6 +64,11 @@ class ArticleListController extends ArticleListController_parent
         parent::__construct();
     }
 
+    public function resetMakairaFilter(): void
+    {
+        $this->cookieHelper->resetMakairaFilter('category', $this->getActCategory()->getId());
+    }
+
     public function getAddSeoUrlParams(): string
     {
         $this->cookieHelper->savePageNumberToCookie();

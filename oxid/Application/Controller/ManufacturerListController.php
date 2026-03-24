@@ -179,7 +179,7 @@ class ManufacturerListController extends ManufacturerListController_parent
 
     public function resetMakairaFilter(): void
     {
-        $this->cookieHelper->setCookie('manufacturer', $this->getManufacturerId());
+        $this->cookieHelper->resetMakairaFilter('manufacturer', $this->getActManufacturer()->getId());
     }
 
     protected function addPageNrParam($sUrl, $iPage, $iLang = null)

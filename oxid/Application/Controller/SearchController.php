@@ -48,6 +48,11 @@ class SearchController extends SearchController_parent
         parent::__construct();
     }
 
+    public function resetMakairaFilter(): void
+    {
+        $this->cookieHelper->resetMakairaFilter('search', $this->getSearchParam());
+    }
+
     public function getAddUrlParams(): string
     {
         $this->cookieHelper->savePageNumberToCookie();
