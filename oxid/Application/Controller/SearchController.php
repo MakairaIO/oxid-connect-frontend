@@ -111,7 +111,7 @@ class SearchController extends SearchController_parent
 
     public function redirectMakairaFilter(): void
     {
-        $redirectUrl = $this->getAggregationProvider()->createRedirectUrl($this->getActiveCategory()->getLink());
+        $redirectUrl = $this->getAggregationProvider()->createRedirectUrl($this->getActiveCategory()->link);
         ContainerFacade::get(OxidSettings::class)->redirect($redirectUrl);
     }
 
