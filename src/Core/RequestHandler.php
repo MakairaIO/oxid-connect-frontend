@@ -34,6 +34,7 @@ use function in_array;
 use function is_bool;
 use function is_string;
 use function json_decode;
+use function json_validate;
 use function preg_replace;
 use function stripos;
 use function strtolower;
@@ -200,7 +201,8 @@ class RequestHandler
         $searchHandler = ContainerFacade::get(SearchHandler::class);
 
         try {
-            $requestExperiments = json_decode($_COOKIE[Cookies::EXPERIMENTS], true, 512, JSON_THROW_ON_ERROR);
+            $rawExperiments     = $_COOKIE[Cookies::EXPERIMENTS] ?? '{}';
+            $requestExperiments = json_decode((string) $rawExperiments, true, 512, JSON_THROW_ON_ERROR);
             if ($requestExperiments) {
                 $query->constraints[Constraints::AB_EXPERIMENTS] = $requestExperiments;
             }

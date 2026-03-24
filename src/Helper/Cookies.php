@@ -41,6 +41,21 @@ class Cookies
     }
 
     /**
+     * @param $type
+     * @param $ident
+     *
+     * @return void
+     * @throws JsonException
+     * @throws LanguageNotFoundException
+     */
+    public function resetMakairaFilter($type, $ident): void
+    {
+        $cookieFilter = $this->loadMakairaFilterFromCookie();
+        unset($cookieFilter[$type][$ident]);
+        $this->saveMakairaFilterToCookie($cookieFilter);
+    }
+
+    /**
      * @param $cookieFilter
      *
      * @return void

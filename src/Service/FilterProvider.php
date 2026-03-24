@@ -139,14 +139,13 @@ class FilterProvider
             return $this->activeFilter;
         }
 
-        $type = $this->mapOxidClass($this->oxidHelper->getCurrentViewClassName());
+        $type = (string) $this->mapOxidClass($this->oxidHelper->getCurrentViewClassName());
         $id   = match ($type) {
             'category'     => $this->oxidHelper->getCurrentCategoryId(),
             'manufacturer' => $this->oxidHelper->getCurrentManufacturerId(),
             'search'       => $this->oxidHelper->getCurrentSearchParam(),
             'details'      => $this->oxidHelper->getCurrentArticleId(),
         };
-
 
         $request        = $this->oxidHelper->getRequest();
         $requestFilter  = (array) $request->getRequestParameter($this->filterParameterName, []);

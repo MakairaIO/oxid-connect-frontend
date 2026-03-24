@@ -146,7 +146,7 @@ class SearchHandler extends AbstractHandler
     {
         $data = array_replace(['items' =>  [], 'aggregations' => []], $data);
 
-        $items = $data['items'];
+        $items = (array) $data['items'];
 
         $data['items'] = [];
         foreach ($items as $key => $item) {
@@ -156,7 +156,7 @@ class SearchHandler extends AbstractHandler
         }
         $data['count'] = count($data['items']);
 
-        foreach ($data['aggregations'] as $key => $item) {
+        foreach ((array) $data['aggregations'] as $key => $item) {
             $data['aggregations'][$key] = new Aggregation($item);
         }
 
