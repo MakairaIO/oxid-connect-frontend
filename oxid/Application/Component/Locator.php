@@ -16,8 +16,6 @@ use OxidEsales\Eshop\Application\Controller\MoreDetailsController;
 use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Application\Model\CategoryList;
 use OxidEsales\Eshop\Application\Model\Manufacturer;
-use OxidEsales\Eshop\Application\Model\SeoEncoderCategory;
-use OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer;
 use OxidEsales\Eshop\Core\Contract\IUrl;
 use OxidEsales\Eshop\Core\Exception\LanguageNotFoundException;
 use OxidEsales\Eshop\Core\Registry;
@@ -276,7 +274,7 @@ class Locator extends Locator_parent
     private function setCategoryToListLink(Category $category, int $page, bool $seoActive): void
     {
         $this->setToListLink(
-            [ContainerFacade::get(SeoEncoderCategory::class), 'getCategoryPageUrl'],
+            ['makaira.oxid.seo_encoder_category', 'getCategoryPageUrl'],
             $category,
             $page,
             $seoActive,
@@ -323,7 +321,7 @@ class Locator extends Locator_parent
     private function setManufacturerToListLink(Manufacturer $manufacturer, int $page, bool $seoActive): void
     {
         $this->setToListLink(
-            [ContainerFacade::get(SeoEncoderManufacturer::class), 'getManufacturerPageUrl'],
+            ['makaira.oxid.seo_encoder_manufacturer', 'getManufacturerPageUrl'],
             $manufacturer,
             $page,
             $seoActive,
