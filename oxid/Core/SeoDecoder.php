@@ -11,6 +11,7 @@ use function preg_match;
 use function preg_match_all;
 use function rtrim;
 use function str_contains;
+use function str_ends_with;
 use function urldecode;
 
 class SeoDecoder extends SeoDecoder_parent
@@ -38,16 +39,18 @@ class SeoDecoder extends SeoDecoder_parent
         }
 
         $filter = [];
-        foreach ($filterMatches[1] as $filterMatch) {
+        foreach ($filterMatches[2] as $filterMatch) {
             $parts = explode('_', $filterMatch);
             $value = urldecode(array_pop($parts));
             $key = implode('_', $parts);
 
             $value = str_replace('---', '/', $value);
-            $filter[$key][] = (array) $value;
+            if (str_ends_with($key, '_from') || str_ends_with($key, '_to')) {
+                $filter[$key] = $value;
+            } else {
+                $filter[$key][] = $value;
+            }
         }
-
-        $filter = array_map(static fn ($values) => array_merge(...$values), $filter);
 
         $seoUrl = $filterMatches[1][0];
 

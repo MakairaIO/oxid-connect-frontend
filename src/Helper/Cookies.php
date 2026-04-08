@@ -90,7 +90,6 @@ class Cookies
         bool $saveToSession = true,
         bool $secure = false,
         bool $httpOnly = true,
-
     ): bool {
         if (in_array($name, self::PERSONALIZATION_COOKIES, true) && !$this->isPersonalizationEnabled()) {
             return false;
