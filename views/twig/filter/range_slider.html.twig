@@ -13,8 +13,10 @@
     <input type="hidden" class="makaira-filter__input--min" name="{{ filterParamerterName }}[{{ aggregation.key }}_from]" value="{{ aggregation.min }}" />
     <input type="hidden" class="makaira-filter__input--max" name="{{ filterParamerterName }}[{{ aggregation.key }}_to]" value="{{ aggregation.max }}" />
     {# TODO Handle min max check in js and remove additional inputs #}
+    {#
     <input type="hidden" name="{{ filterParamerterName }}[{{ aggregation.key }}_rangemin]" value="{{ aggregation.min|round(0, 'floor') }}" />
     <input type="hidden" name="{{ filterParamerterName }}[{{ aggregation.key }}_rangemax]" value="{{ aggregation.max|round(0, 'ceil') }}" />
+    #}
 
     <p class="makaira-filter__slider-values">
         <span class="makaira-filter__symbol--currency">{{ sCurrencySign }}</span>

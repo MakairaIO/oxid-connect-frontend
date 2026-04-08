@@ -17,10 +17,12 @@
     <input type="hidden" class="makaira-filter__input--min" name="{{ fromname }}" value="{{ dataMin }}" />
     <input type="hidden" class="makaira-filter__input--max" name="{{ toname }}" value="{{ dataMax }}" />
     {# TODO Handle min max check in js and remove additional inputs #}
+    {#
     {% set maxname = oViewConf.getFilterParamName()|cat("[")|cat(aggregation.key)|cat("_rangemax]") %}
     {% set minname = oViewConf.getFilterParamName()|cat("[")|cat(aggregation.key)|cat("_rangemin]") %}
-    <input type="hidden" name="{{ minname }}" value="{{ dataMin|round(0, 'floor') }}" />
-    <input type="hidden" name="{{ maxname }}" value="{{ dataMax|round(0, 'ceil') }}" />
+    <input type="hidden" name="{{ minname }}" value="{{ dataLeft|round(0, 'floor') }}" />
+    <input type="hidden" name="{{ maxname }}" value="{{ dataRight|round(0, 'ceil') }}" />
+    #}
 
     <p class="makaira-filter__slider-values">
         <span class="makaira-filter__symbol--currency">{{ sCurrencySign }}</span>
