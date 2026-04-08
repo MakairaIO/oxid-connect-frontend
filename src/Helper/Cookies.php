@@ -8,6 +8,7 @@ use OxidEsales\Eshop\Core\Language;
 use OxidEsales\Eshop\Core\Registry;
 use Throwable;
 
+use function array_replace_recursive;
 use function base64_encode;
 use function json_encode;
 use function sprintf;
@@ -64,9 +65,11 @@ class Cookies
      */
     public function saveMakairaFilterToCookie($cookieFilter): void
     {
+        $oldCookieFilter = $this->loadMakairaFilterFromCookie();
+        $newCookieFilter = array_replace_recursive($cookieFilter, $oldCookieFilter);
         Registry::getUtilsServer()->setOxCookie(
             sprintf('%s_%s', $this->filterParameterName, $this->language->getLanguageAbbr()),
-            base64_encode(json_encode($cookieFilter, JSON_THROW_ON_ERROR)),
+            base64_encode(json_encode($newCookieFilter, JSON_THROW_ON_ERROR)),
         );
     }
 
