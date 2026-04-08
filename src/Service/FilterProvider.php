@@ -17,6 +17,7 @@ use function is_array;
 use function parse_url;
 use function preg_match;
 use function rtrim;
+use function str_contains;
 use function str_ends_with;
 use function str_replace;
 use function str_starts_with;
@@ -47,15 +48,18 @@ class FilterProvider
                                      $this->oxidHelper->seoIsActive();
     }
 
-    public function createRedirectUrl(string $baseUrl, bool $useSeoFilter = true): string
-    {
+    public function createRedirectUrl(
+        string $baseUrl,
+        bool $useSeoFilter = true,
+        array $additionalParameter = [],
+    ): string {
         $this->loadAggregations();
 
         if ($useSeoFilter && $this->enableSeoFilter) {
             return $this->createSeoUrl($baseUrl, $this->getActiveFilter());
         }
 
-        return $this->createFilterUrl($baseUrl, $this->getActiveFilter());
+        return $this->createFilterUrl($baseUrl, $this->getActiveFilter(), $useSeoFilter, $additionalParameter);
     }
 
     private function loadAggregations(): void
@@ -241,18 +245,25 @@ class FilterProvider
         };
     }
 
-    public function createFilterUrl(string $baseUrl, array $filterParams): string
-    {
+    public function createFilterUrl(
+        string $baseUrl,
+        array $filterParams,
+        bool $useSeoUrl = true,
+        array $additionalParameter = [],
+    ): string {
         if (isset($this->generatedFilterUrl[$baseUrl])) {
             return $this->generatedFilterUrl[$baseUrl];
         }
 
-        $params      = [$this->filterParameterName => $filterParams];
+        $params      = [$this->filterParameterName => $filterParams] + $additionalParameter;
         $filterQuery = http_build_query($params);
 
         $parsedUrl = parse_url($baseUrl);
 
-        $path = rtrim($parsedUrl['path'], '/') . '/';
+        $path = rtrim($parsedUrl['path'], '/');
+        if ($useSeoUrl) {
+            $path .= '/';
+        }
 
         $query = '';
         if ('' !== $parsedUrl['query']) {
@@ -322,15 +333,14 @@ class FilterProvider
     }
 
     /**
-     * @param array $aggregations
-     *
-     * @return void
      * @throws JsonException
      * @throws LanguageNotFoundException
      */
-    public function setAggregations(array $aggregations): void
+    public function setAggregations(array $aggregations, bool $storeInCookie = true): void
     {
         static::$aggregations = $aggregations;
-        $this->cookieHelper->saveMakairaFilterToCookie($aggregations);
+        if ($storeInCookie) {
+            $this->cookieHelper->saveMakairaFilterToCookie($aggregations);
+        }
     }
 }

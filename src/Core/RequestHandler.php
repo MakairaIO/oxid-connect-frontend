@@ -247,7 +247,7 @@ class RequestHandler
         $oxArticleList = $this->loadProducts($productIds, $productResult);
 
         $aggregations = $this->postProcessAggregations($productResult->aggregations ?? [], $query, $unmodifiedQuery);
-        $this->aggregationProvider->setAggregations($aggregations);
+        $this->aggregationProvider->setAggregations($aggregations, false);
 
         $responseExperiments = $this->result['experiments'] ?? [];
 
