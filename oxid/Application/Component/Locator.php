@@ -274,7 +274,7 @@ class Locator extends Locator_parent
     private function setCategoryToListLink(Category $category, int $page, bool $seoActive): void
     {
         $this->setToListLink(
-            ['makaira.oxid.seo_encoder_category', 'getCategoryPageUrl'],
+            [ContainerFacade::get('makaira.oxid.seo_encoder_category'), 'getCategoryPageUrl'],
             $category,
             $page,
             $seoActive,
@@ -321,7 +321,7 @@ class Locator extends Locator_parent
     private function setManufacturerToListLink(Manufacturer $manufacturer, int $page, bool $seoActive): void
     {
         $this->setToListLink(
-            ['makaira.oxid.seo_encoder_manufacturer', 'getManufacturerPageUrl'],
+            [ContainerFacade::get('makaira.oxid.seo_encoder_manufacturer'), 'getManufacturerPageUrl'],
             $manufacturer,
             $page,
             $seoActive,
