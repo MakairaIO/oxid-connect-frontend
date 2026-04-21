@@ -149,7 +149,12 @@ class FilterProvider
             'manufacturer' => $this->oxidHelper->getCurrentManufacturerId(),
             'search'       => $this->oxidHelper->getCurrentSearchParam(),
             'details'      => $this->oxidHelper->getCurrentArticleId(),
+            default        => '',
         };
+
+        if (!$id) {
+            return [];
+        }
 
         $request        = $this->oxidHelper->getRequest();
         $requestFilter  = (array) $request->getRequestParameter($this->filterParameterName, []);

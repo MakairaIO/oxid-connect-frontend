@@ -16,11 +16,18 @@ services:
     exclude: 'src/{Domain,Exception,Oxid,Controller,Personalization}'
 
   Makaira\HttpClient:
-    alias: Makaira\HttpClient\Signing
+    alias: Makaira\OxidConnect\HttpClient\Caching
 
   Makaira\HttpClient\Curl:
     bind:
       $timeout: '@=service("Makaira\\OxidConnect\\Helper\\ModuleSettings").getInteger("makaira_connect_timeout")'
+
+  cache.http-client:
+    class: 'Symfony\Component\Cache\Adapter\ArrayAdapter'
+    bind:
+      $maxLifetime: 60
+      $maxItems: 20
+      $defaultLifetime: 10
 
   Makaira\OxidConnect\HttpClient\BaseUrl:
     bind:
@@ -40,6 +47,11 @@ services:
     bind:
       $sharedSecret: '@=service("Makaira\\OxidConnect\\Helper\\ModuleSettings").getString("makaira_connect_secret", parameter("makaira.connect-essential.id"))'
       $aggregate: '@Makaira\OxidConnect\HttpClient\Trace'
+
+  Makaira\OxidConnect\HttpClient\Caching:
+    bind:
+      $httpClient: '@Makaira\HttpClient\Signing'
+      $cache: '@cache.http-client'
 
   Makaira\OxidConnect\HttpClient\Json:
     bind:
