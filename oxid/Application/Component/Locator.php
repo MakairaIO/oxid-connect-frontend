@@ -95,6 +95,9 @@ class Locator extends Locator_parent
                 if (!$locatorObject) {
                     return;
                 }
+                if ($categoryTree = $oLocatorTarget->getCategoryTree()) {
+                    $oLocatorTarget->setCatTreePath($categoryTree->getPath());
+                }
                 $constraints[Constraints::CATEGORY] = $this->getInheritedCategoryIds($locatorObject);
                 break;
             case 'search':
@@ -119,6 +122,9 @@ class Locator extends Locator_parent
                 $locatorObject = $oLocatorTarget->getActManufacturer();
                 if (!$locatorObject) {
                     return;
+                }
+                if ($manufacturerTree = $oLocatorTarget->getManufacturerTree()) {
+                    $oLocatorTarget->setCatTreePath($manufacturerTree);
                 }
                 $constraints[Constraints::MANUFACTURER] = $locatorObject->getId();
                 break;
