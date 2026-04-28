@@ -29,10 +29,14 @@ services:
       $maxItems: 20
       $defaultLifetime: 10
 
+  Makaira\OxidConnect\HttpClient\Json:
+    bind:
+      $httpClient: '@Makaira\HttpClient\Curl'
+
   Makaira\OxidConnect\HttpClient\BaseUrl:
     bind:
       $baseUrl: '@=service("Makaira\\OxidConnect\\Helper\\ModuleSettings").getString("makaira_application_url")'
-      $httpClient: '@Makaira\HttpClient\Curl'
+      $httpClient: '@Makaira\OxidConnect\HttpClient\Json'
 
   Makaira\OxidConnect\HttpClient\Instance:
     bind:
@@ -48,18 +52,19 @@ services:
       $sharedSecret: '@=service("Makaira\\OxidConnect\\Helper\\ModuleSettings").getString("makaira_connect_secret", parameter("makaira.connect-essential.id"))'
       $aggregate: '@Makaira\OxidConnect\HttpClient\Trace'
 
-  Makaira\OxidConnect\HttpClient\Caching:
+  Makaira\OxidConnect\HttpClient\SortFieldMapping:
     bind:
       $httpClient: '@Makaira\HttpClient\Signing'
-      $cache: '@cache.http-client'
+      $fieldMapping: '@=service("Makaira\\OxidConnect\\Helper\\ModuleSettings").getCollection("makaira_sort_field_mapping")'
 
-  Makaira\OxidConnect\HttpClient\Json:
+  Makaira\OxidConnect\HttpClient\Caching:
     bind:
-      $httpClient: '@Makaira\HttpClient'
+      $httpClient: '@Makaira\OxidConnect\HttpClient\SortFieldMapping'
+      $cache: '@cache.http-client'
 
   Makaira\OxidConnect\Service\RecommendationHandler:
     bind:
-      $httpClient: '@Makaira\OxidConnect\HttpClient\Json'
+      $httpClient: '@Makaira\HttpClient'
 
   Makaira\OxidConnect\Helper\ModuleSettings:
     bind:
