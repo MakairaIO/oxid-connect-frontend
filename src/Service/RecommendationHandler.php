@@ -6,11 +6,15 @@ use JsonException;
 use Makaira\Connect\Exception as ConnectException;
 use Makaira\Connect\Exceptions\FeatureNotAvailableException;
 use Makaira\Connect\Exceptions\UnexpectedValueException;
-use Makaira\HttpClient;
+use Makaira\Exception;
+use Makaira\Exceptions\TimeoutException;
+use Makaira\OxidConnect\Http\Client;
+use Makaira\OxidConnect\Http\Request;
 use Makaira\OxidConnect\Utils\OperationalIntelligence;
 use Makaira\RecommendationQuery;
 use Makaira\Result;
 use Makaira\ResultItem;
+use Psr\Cache\InvalidArgumentException;
 
 use function array_map;
 use function array_replace;
@@ -18,7 +22,7 @@ use function json_decode;
 
 class RecommendationHandler extends AbstractHandler
 {
-    public function __construct(private OperationalIntelligence $operationalIntelligence, HttpClient $httpClient)
+    public function __construct(private OperationalIntelligence $operationalIntelligence, Client $httpClient)
     {
         parent::__construct($httpClient);
     }
@@ -29,13 +33,16 @@ class RecommendationHandler extends AbstractHandler
      * @return Result
      * @throws ConnectException
      * @throws FeatureNotAvailableException
-     * @throws UnexpectedValueException
      * @throws JsonException
+     * @throws UnexpectedValueException
+     * @throws Exception
+     * @throws TimeoutException
+     * @throws InvalidArgumentException
      */
     public function recommendation(RecommendationQuery $query): Result
     {
         $this->operationalIntelligence->apply($query);
-        $response = $this->httpClient->request('POST', '/recommendation', $query);
+        $response  = $this->httpClient->request(new Request('POST', '/recommendation', $query));
         $apiResult = json_decode($response->body, true, 512, JSON_THROW_ON_ERROR);
 
         if (402 === $response->status) {

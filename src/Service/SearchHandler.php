@@ -14,17 +14,22 @@ use JsonException;
 use Makaira\Aggregation;
 use Makaira\Connect\Exception as ConnectException;
 use Makaira\Connect\Exceptions\UnexpectedValueException;
-use Makaira\HttpClient;
+use Makaira\Exception;
+use Makaira\Exceptions\TimeoutException;
+use Makaira\HttpClient\Response;
+use Makaira\OxidConnect\Http\Client;
+use Makaira\OxidConnect\Http\Request;
 use Makaira\OxidConnect\Utils\ConnectVersion;
 use Makaira\Query;
 use Makaira\Result;
 use Makaira\ResultItem;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServiceInterface;
 
+use Psr\Cache\InvalidArgumentException;
+
 use function count;
 use function implode;
 use function json_decode;
-use function json_encode;
 use function sprintf;
 
 use const JSON_THROW_ON_ERROR;
@@ -37,7 +42,7 @@ class SearchHandler extends AbstractHandler
     private static ?array $maxItems = null;
 
     public function __construct(
-        HttpClient $httpClient,
+        Client $httpClient,
         private ModuleSettingServiceInterface $connectSettings,
         private ConnectVersion $connectVersion,
     ) {
@@ -45,23 +50,20 @@ class SearchHandler extends AbstractHandler
     }
 
     /**
-     * @param Query $query
-     *
      * @return array<Result>
      * @throws ConnectException
-     * @throws UnexpectedValueException
      * @throws JsonException
+     * @throws UnexpectedValueException
+     * @throws Exception
+     * @throws TimeoutException
+     * @throws InvalidArgumentException
      */
     public function search(Query $query): array
     {
         $query->searchPhrase = htmlspecialchars_decode($query->searchPhrase, ENT_QUOTES);
         $query->apiVersion   = $this->connectVersion->getVersionNumber();
-        $body                = json_encode($query, JSON_THROW_ON_ERROR);
-        $headers             = [
-            "Content-Type: application/json; charset=UTF-8",
-        ];
 
-        $response = $this->httpClient->request('POST', '/search/', $body, $headers);
+        $response = $this->httpClient->request(new Request('POST', '/search/', $query));
 
         try {
             $apiResult = json_decode($response->body, true, 512, JSON_THROW_ON_ERROR);
@@ -97,14 +99,10 @@ class SearchHandler extends AbstractHandler
     }
 
     /**
-     * @param mixed               $apiResult
-     * @param HttpClient\Response $response
-     *
-     * @return mixed
      * @throws ConnectException
      * @throws UnexpectedValueException
      */
-    public function checkResponse(mixed $apiResult, HttpClient\Response $response): mixed
+    public function checkResponse(mixed $apiResult, Response $response): mixed
     {
         if ($response->status >= 400 || (isset($apiResult['ok']) && $apiResult['ok'] === false)) {
             $messageParts      = [];

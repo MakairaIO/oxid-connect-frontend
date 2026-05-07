@@ -1,31 +1,33 @@
 <?php
 
-namespace Makaira\OxidConnect\HttpClient;
+namespace Makaira\OxidConnect\Http\Middleware;
 
 use JsonException;
-use Makaira\HttpClient;
+use Makaira\OxidConnect\Http\Request;
 
 use function array_change_key_case;
-use function is_string;
 
-class SortFieldMapping extends HttpClient
+use function is_string;
+use function json_decode;
+use function json_encode;
+use function strtolower;
+
+use const CASE_LOWER;
+use const JSON_THROW_ON_ERROR;
+
+class SortFieldMapping implements MiddlewareInterface
 {
-    public function __construct(private HttpClient $httpClient, private array $fieldMapping)
+    public function __construct(private array $fieldMapping)
     {
         $this->fieldMapping = array_change_key_case($this->fieldMapping, CASE_LOWER);
     }
 
     /**
-     * @param string $method
-     * @param string $url
-     * @param mixed  $body
-     * @param array  $headers
-     *
-     * @return HttpClient\Response
      * @throws JsonException
      */
-    public function request($method, $url, $body = null, array $headers = [])
+    public function apply(Request $request): Request
     {
+        $body = $request->getBody();
         $wasJson = false;
         if (is_string($body)) {
             try {
@@ -48,6 +50,6 @@ class SortFieldMapping extends HttpClient
             $body = json_encode($body, JSON_THROW_ON_ERROR);
         }
 
-        return $this->httpClient->request($method, $url, $body, $headers);
+        return $request->withBody($body);
     }
 }

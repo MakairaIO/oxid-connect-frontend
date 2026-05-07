@@ -59,7 +59,12 @@ class FilterProvider
             return $this->createSeoUrl($baseUrl, $this->getActiveFilter());
         }
 
-        return $this->createFilterUrl($baseUrl, $this->getActiveFilter(), $useSeoFilter, $additionalParameter);
+        return $this->createFilterUrl(
+            $baseUrl,
+            $this->getActiveFilter(),
+            $useSeoFilter && $this->enableSeoFilter,
+            $additionalParameter
+        );
     }
 
     private function loadAggregations(): void
