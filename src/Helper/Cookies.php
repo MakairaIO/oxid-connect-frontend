@@ -66,7 +66,8 @@ class Cookies
     public function saveMakairaFilterToCookie($cookieFilter): void
     {
         $oldCookieFilter = $this->loadMakairaFilterFromCookie();
-        $newCookieFilter = array_replace_recursive($cookieFilter, $oldCookieFilter);
+        $newCookieFilter = array_replace_recursive($oldCookieFilter, (array) $cookieFilter);
+
         Registry::getUtilsServer()->setOxCookie(
             sprintf('%s_%s', $this->filterParameterName, $this->language->getLanguageAbbr()),
             base64_encode(json_encode($newCookieFilter, JSON_THROW_ON_ERROR)),

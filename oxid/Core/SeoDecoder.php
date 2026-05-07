@@ -2,8 +2,10 @@
 
 namespace Makaira\OxidConnect\Oxid\Core;
 
+use JsonException;
 use Makaira\OxidConnect\Helper\ModuleSettings;
 use Makaira\OxidConnect\Service\FilterProvider;
+use OxidEsales\Eshop\Core\Exception\LanguageNotFoundException;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 
 use function explode;
@@ -16,6 +18,13 @@ use function urldecode;
 
 class SeoDecoder extends SeoDecoder_parent
 {
+    /**
+     * @param $seoUrl
+     *
+     * @return array|false
+     * @throws JsonException
+     * @throws LanguageNotFoundException
+     */
     public function decodeUrl($seoUrl): array|false
     {
         if (!str_contains($seoUrl, '_')) {
@@ -56,7 +65,11 @@ class SeoDecoder extends SeoDecoder_parent
 
         $decodedUrl = parent::decodeUrl($seoUrl);
         $filterProvider = ContainerFacade::get(FilterProvider::class);
-        $filterProvider->buildCookieFilter($decodedUrl['cl'], $decodedUrl['cnid'] ?? $decodedUrl['mnid'] ?? '', $filter);
+        $filterProvider->buildCookieFilter(
+            $decodedUrl['cl'],
+            $decodedUrl['cnid'] ?? $decodedUrl['mnid'] ?? '',
+            $filter
+        );
 
         return $decodedUrl;
     }
