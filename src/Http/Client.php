@@ -183,6 +183,7 @@ class Client implements ClientInterface
             $error = curl_error($ch);
             $errno = curl_errno($ch);
             curl_close($ch);
+            fclose($headerBuffer);
 
             if (28 === $errno) {
                 throw new TimeoutException("Connection to server '{$url}' timed out: " . $error);

@@ -11,9 +11,9 @@ class MiddlewareStack implements MiddlewareInterface, MiddlewareStackInterface
      */
     private array $stack = [];
 
-    public function addMiddleware(MiddlewareInterface $middleware, int $priority = 0): void
+    public function addMiddleware(MiddlewareInterface $middleware, int $order = 0): void
     {
-        $this->stack[$priority][] = $middleware;
+        $this->stack[$order][] = $middleware;
     }
 
     public function apply(Request $request): Request
