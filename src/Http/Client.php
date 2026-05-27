@@ -133,7 +133,7 @@ class Client implements ClientInterface
                 $request->getMethod(),
                 $request->getUri(),
                 $body,
-                json_encode($request->getMethod(), JSON_THROW_ON_ERROR),
+                json_encode($request->getHeaders(), JSON_THROW_ON_ERROR),
             ),
         );
     }
