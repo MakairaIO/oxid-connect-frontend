@@ -42,31 +42,20 @@ class Cookies
     }
 
     /**
-     * @param $type
-     * @param $ident
-     *
-     * @return void
-     * @throws JsonException
-     * @throws LanguageNotFoundException
-     */
-    public function resetMakairaFilter($type, $ident): void
-    {
-        $cookieFilter = $this->loadMakairaFilterFromCookie();
-        unset($cookieFilter[$type][$ident]);
-        $this->saveMakairaFilterToCookie($cookieFilter);
-    }
-
-    /**
      * @param $cookieFilter
      *
      * @return void
      * @throws JsonException
      * @throws LanguageNotFoundException
      */
-    public function saveMakairaFilterToCookie($cookieFilter): void
+    public function saveMakairaFilterToCookie($cookieFilter, bool $merge = true): void
     {
-        $oldCookieFilter = $this->loadMakairaFilterFromCookie();
-        $newCookieFilter = array_replace_recursive($oldCookieFilter, (array) $cookieFilter);
+        $newCookieFilter = (array) $cookieFilter;
+
+        if ($merge) {
+            $oldCookieFilter = $this->loadMakairaFilterFromCookie();
+            $newCookieFilter = array_replace_recursive($oldCookieFilter, (array) $cookieFilter);
+        }
 
         Registry::getUtilsServer()->setOxCookie(
             sprintf('%s_%s', $this->filterParameterName, $this->language->getLanguageAbbr()),

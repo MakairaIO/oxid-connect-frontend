@@ -39,18 +39,22 @@ class SearchController extends SearchController_parent
 
     private Cookies $cookieHelper;
 
+    private FilterProvider $filterProvider;
+
     public function __construct()
     {
         $this->moduleSettingService = ContainerFacade::get(ModuleSettings::class);
         $this->oxidSettingsService  = ContainerFacade::get(OxidSettingsInterface::class);
         $this->cookieHelper         = ContainerFacade::get(Cookies::class);
+        $this->filterProvider       = ContainerFacade::get(FilterProvider::class);
 
         parent::__construct();
     }
 
     public function resetMakairaFilter(): void
     {
-        $this->cookieHelper->resetMakairaFilter('search', $this->getSearchParam());
+        $this->filterProvider->resetAggregation('search', $this->getSearchParam());
+        $this->redirectMakairaFilter();
     }
 
     public function getAddUrlParams(): string

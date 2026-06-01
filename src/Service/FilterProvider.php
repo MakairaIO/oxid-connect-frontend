@@ -67,9 +67,9 @@ class FilterProvider
         );
     }
 
-    private function loadAggregations(): void
+    private function loadAggregations(bool $force = false): void
     {
-        if (self::$aggregations === null) {
+        if (self::$aggregations === null || $force) {
             static::$aggregations = $this->cookieHelper->loadMakairaFilterFromCookie();
         }
     }
@@ -335,11 +335,11 @@ class FilterProvider
      */
     public function resetAggregation(string $type, string $ident): void
     {
-        $this->loadAggregations();
+        $this->loadAggregations(true);
 
         unset(static::$aggregations[$type][$ident]);
 
-        $this->cookieHelper->saveMakairaFilterToCookie(static::$aggregations);
+        $this->cookieHelper->saveMakairaFilterToCookie(static::$aggregations, false);
     }
 
     /**
