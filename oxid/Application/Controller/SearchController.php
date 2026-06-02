@@ -39,13 +39,22 @@ class SearchController extends SearchController_parent
 
     private Cookies $cookieHelper;
 
+    private FilterProvider $filterProvider;
+
     public function __construct()
     {
         $this->moduleSettingService = ContainerFacade::get(ModuleSettings::class);
         $this->oxidSettingsService  = ContainerFacade::get(OxidSettingsInterface::class);
         $this->cookieHelper         = ContainerFacade::get(Cookies::class);
+        $this->filterProvider       = ContainerFacade::get(FilterProvider::class);
 
         parent::__construct();
+    }
+
+    public function resetMakairaFilter(): void
+    {
+        $this->filterProvider->resetAggregation('search', $this->getSearchParam());
+        $this->redirectMakairaFilter();
     }
 
     public function getAddUrlParams(): string
@@ -106,7 +115,11 @@ class SearchController extends SearchController_parent
 
     public function redirectMakairaFilter(): void
     {
-        $redirectUrl = $this->getAggregationProvider()->createRedirectUrl($this->getActiveCategory()->getLink());
+        $redirectUrl = $this->getAggregationProvider()->createRedirectUrl(
+            $this->getActiveCategory()->link,
+            false,
+            array_filter($this->getNavigationParams()),
+        );
         ContainerFacade::get(OxidSettings::class)->redirect($redirectUrl);
     }
 
@@ -140,7 +153,7 @@ class SearchController extends SearchController_parent
             'searchPhrase' => $oxidRequest->getRequestParameter('searchparam'),
             'isSearch'     => true,
             'constraints'  => array_filter($constraints),
-            'aggregations' => $this->getAggregationProvider()->getAggregations(),
+            'aggregations' => $this->getAggregationProvider()->getActiveFilter(),
             'sorting'      => $requestHandler->sanitizeSorting((array) $this->getSorting('search')),
             'count'        => $productCount,
             'offset'       => $productCount * max(0, (int) $oxidRequest->getRequestParameter('pgNr', 0)),

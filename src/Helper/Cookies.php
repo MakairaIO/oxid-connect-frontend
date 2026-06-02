@@ -8,6 +8,7 @@ use OxidEsales\Eshop\Core\Language;
 use OxidEsales\Eshop\Core\Registry;
 use Throwable;
 
+use function array_replace_recursive;
 use function base64_encode;
 use function json_encode;
 use function sprintf;
@@ -47,11 +48,18 @@ class Cookies
      * @throws JsonException
      * @throws LanguageNotFoundException
      */
-    public function saveMakairaFilterToCookie($cookieFilter): void
+    public function saveMakairaFilterToCookie($cookieFilter, bool $merge = true): void
     {
+        $newCookieFilter = (array) $cookieFilter;
+
+        if ($merge) {
+            $oldCookieFilter = $this->loadMakairaFilterFromCookie();
+            $newCookieFilter = array_replace_recursive($oldCookieFilter, (array) $cookieFilter);
+        }
+
         Registry::getUtilsServer()->setOxCookie(
             sprintf('%s_%s', $this->filterParameterName, $this->language->getLanguageAbbr()),
-            base64_encode(json_encode($cookieFilter, JSON_THROW_ON_ERROR)),
+            base64_encode(json_encode($newCookieFilter, JSON_THROW_ON_ERROR)),
         );
     }
 
@@ -75,7 +83,6 @@ class Cookies
         bool $saveToSession = true,
         bool $secure = false,
         bool $httpOnly = true,
-
     ): bool {
         if (in_array($name, self::PERSONALIZATION_COOKIES, true) && !$this->isPersonalizationEnabled()) {
             return false;

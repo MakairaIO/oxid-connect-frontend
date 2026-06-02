@@ -34,11 +34,14 @@ class ManufacturerListController extends ManufacturerListController_parent
 
     private Cookies $cookieHelper;
 
+    private FilterProvider $filterProvider;
+
     public function __construct()
     {
         $this->moduleSettingService = ContainerFacade::get(ModuleSettings::class);
         $this->oxidSettingsService  = ContainerFacade::get(OxidSettingsInterface::class);
         $this->cookieHelper         = ContainerFacade::get(Cookies::class);
+        $this->filterProvider       = ContainerFacade::get(FilterProvider::class);
 
         parent::__construct();
     }
@@ -179,7 +182,8 @@ class ManufacturerListController extends ManufacturerListController_parent
 
     public function resetMakairaFilter(): void
     {
-        $this->cookieHelper->setCookie('manufacturer', $this->getManufacturerId());
+        $this->filterProvider->resetAggregation('manufacturer', $this->getManufacturerId());
+        $this->redirectMakairaFilter();
     }
 
     protected function addPageNrParam($sUrl, $iPage, $iLang = null)

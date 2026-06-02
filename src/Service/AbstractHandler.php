@@ -11,16 +11,14 @@
 
 namespace Makaira\OxidConnect\Service;
 
-use Makaira\HttpClient;
+use Makaira\OxidConnect\Http\Client;
 
 abstract class AbstractHandler
 {
     /**
      * AbstractHandler constructor.
-     *
-     * @param HttpClient $httpClient
      */
-    public function __construct(protected HttpClient $httpClient)
+    public function __construct(protected Client $httpClient)
     {
     }
 }

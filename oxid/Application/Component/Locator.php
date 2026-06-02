@@ -16,8 +16,6 @@ use OxidEsales\Eshop\Application\Controller\MoreDetailsController;
 use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Application\Model\CategoryList;
 use OxidEsales\Eshop\Application\Model\Manufacturer;
-use OxidEsales\Eshop\Application\Model\SeoEncoderCategory;
-use OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer;
 use OxidEsales\Eshop\Core\Contract\IUrl;
 use OxidEsales\Eshop\Core\Exception\LanguageNotFoundException;
 use OxidEsales\Eshop\Core\Registry;
@@ -97,6 +95,9 @@ class Locator extends Locator_parent
                 if (!$locatorObject) {
                     return;
                 }
+                if ($categoryTree = $oLocatorTarget->getCategoryTree()) {
+                    $oLocatorTarget->setCatTreePath($categoryTree->getPath());
+                }
                 $constraints[Constraints::CATEGORY] = $this->getInheritedCategoryIds($locatorObject);
                 break;
             case 'search':
@@ -121,6 +122,9 @@ class Locator extends Locator_parent
                 $locatorObject = $oLocatorTarget->getActManufacturer();
                 if (!$locatorObject) {
                     return;
+                }
+                if ($manufacturerTree = $oLocatorTarget->getManufacturerTree()) {
+                    $oLocatorTarget->setCatTreePath($manufacturerTree);
                 }
                 $constraints[Constraints::MANUFACTURER] = $locatorObject->getId();
                 break;
@@ -276,7 +280,7 @@ class Locator extends Locator_parent
     private function setCategoryToListLink(Category $category, int $page, bool $seoActive): void
     {
         $this->setToListLink(
-            [ContainerFacade::get(SeoEncoderCategory::class), 'getCategoryPageUrl'],
+            [ContainerFacade::get('makaira.oxid.seo_encoder_category'), 'getCategoryPageUrl'],
             $category,
             $page,
             $seoActive,
@@ -323,7 +327,7 @@ class Locator extends Locator_parent
     private function setManufacturerToListLink(Manufacturer $manufacturer, int $page, bool $seoActive): void
     {
         $this->setToListLink(
-            [ContainerFacade::get(SeoEncoderManufacturer::class), 'getManufacturerPageUrl'],
+            [ContainerFacade::get('makaira.oxid.seo_encoder_manufacturer'), 'getManufacturerPageUrl'],
             $manufacturer,
             $page,
             $seoActive,

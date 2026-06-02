@@ -17,6 +17,7 @@ use function is_array;
 use function parse_url;
 use function preg_match;
 use function rtrim;
+use function str_contains;
 use function str_ends_with;
 use function str_replace;
 use function str_starts_with;
@@ -47,20 +48,28 @@ class FilterProvider
                                      $this->oxidHelper->seoIsActive();
     }
 
-    public function createRedirectUrl(string $baseUrl, bool $useSeoFilter = true): string
-    {
+    public function createRedirectUrl(
+        string $baseUrl,
+        bool $useSeoFilter = true,
+        array $additionalParameter = [],
+    ): string {
         $this->loadAggregations();
 
         if ($useSeoFilter && $this->enableSeoFilter) {
             return $this->createSeoUrl($baseUrl, $this->getActiveFilter());
         }
 
-        return $this->createFilterUrl($baseUrl, $this->getActiveFilter());
+        return $this->createFilterUrl(
+            $baseUrl,
+            $this->getActiveFilter(),
+            $useSeoFilter && $this->enableSeoFilter,
+            $additionalParameter
+        );
     }
 
-    private function loadAggregations(): void
+    private function loadAggregations(bool $force = false): void
     {
-        if (self::$aggregations === null) {
+        if (self::$aggregations === null || $force) {
             static::$aggregations = $this->cookieHelper->loadMakairaFilterFromCookie();
         }
     }
@@ -139,14 +148,18 @@ class FilterProvider
             return $this->activeFilter;
         }
 
-        $type = $this->mapOxidClass($this->oxidHelper->getCurrentViewClassName());
+        $type = (string) $this->mapOxidClass($this->oxidHelper->getCurrentViewClassName());
         $id   = match ($type) {
             'category'     => $this->oxidHelper->getCurrentCategoryId(),
             'manufacturer' => $this->oxidHelper->getCurrentManufacturerId(),
             'search'       => $this->oxidHelper->getCurrentSearchParam(),
             'details'      => $this->oxidHelper->getCurrentArticleId(),
+            default        => '',
         };
 
+        if (!$id) {
+            return [];
+        }
 
         $request        = $this->oxidHelper->getRequest();
         $requestFilter  = (array) $request->getRequestParameter($this->filterParameterName, []);
@@ -242,18 +255,25 @@ class FilterProvider
         };
     }
 
-    public function createFilterUrl(string $baseUrl, array $filterParams): string
-    {
+    public function createFilterUrl(
+        string $baseUrl,
+        array $filterParams,
+        bool $useSeoUrl = true,
+        array $additionalParameter = [],
+    ): string {
         if (isset($this->generatedFilterUrl[$baseUrl])) {
             return $this->generatedFilterUrl[$baseUrl];
         }
 
-        $params      = [$this->filterParameterName => $filterParams];
+        $params      = [$this->filterParameterName => $filterParams] + $additionalParameter;
         $filterQuery = http_build_query($params);
 
         $parsedUrl = parse_url($baseUrl);
 
-        $path = rtrim($parsedUrl['path'], '/') . '/';
+        $path = rtrim($parsedUrl['path'], '/');
+        if ($useSeoUrl) {
+            $path .= '/';
+        }
 
         $query = '';
         if ('' !== $parsedUrl['query']) {
@@ -315,23 +335,22 @@ class FilterProvider
      */
     public function resetAggregation(string $type, string $ident): void
     {
-        $this->loadAggregations();
+        $this->loadAggregations(true);
 
         unset(static::$aggregations[$type][$ident]);
 
-        $this->cookieHelper->saveMakairaFilterToCookie(static::$aggregations);
+        $this->cookieHelper->saveMakairaFilterToCookie(static::$aggregations, false);
     }
 
     /**
-     * @param array $aggregations
-     *
-     * @return void
      * @throws JsonException
      * @throws LanguageNotFoundException
      */
-    public function setAggregations(array $aggregations): void
+    public function setAggregations(array $aggregations, bool $storeInCookie = true): void
     {
         static::$aggregations = $aggregations;
-        $this->cookieHelper->saveMakairaFilterToCookie($aggregations);
+        if ($storeInCookie) {
+            $this->cookieHelper->saveMakairaFilterToCookie($aggregations);
+        }
     }
 }

@@ -55,13 +55,22 @@ class ArticleListController extends ArticleListController_parent
 
     private ?ArticleList $makairaSearchResult = null;
 
+    private FilterProvider $filterProvider;
+
     public function __construct()
     {
         $this->moduleSettingService = ContainerFacade::get(ModuleSettings::class);
         $this->oxidSettingsService  = ContainerFacade::get(OxidSettingsInterface::class);
         $this->cookieHelper         = ContainerFacade::get(Cookies::class);
+        $this->filterProvider       = ContainerFacade::get(FilterProvider::class);
 
         parent::__construct();
+    }
+
+    public function resetMakairaFilter(): void
+    {
+        $this->filterProvider->resetAggregation('category', $this->getCategoryId());
+        $this->redirectMakairaFilter();
     }
 
     public function getAddSeoUrlParams(): string

@@ -19,7 +19,6 @@
 {% set aggregations = oView.getAggregations() %}
 {% set showResetAll = false %}
 
-
 <aside class="makaira-filter">
     {# show small header if we have other search results located above producs #}
     {% if topActiveClass == "search"  %}
@@ -46,22 +45,24 @@
  #}
 
         {% for key, aggregation in aggregations %}
-            {% set filterTitle = aggregation.title|translate %}
-            {% if 'ERROR: Translation for' in filterTitle %}
-                {% set filterTitle = aggregation.title %}
-            {% endif %}
+            {%  if aggregation.type %}
+                {% set filterTitle = aggregation.title|translate %}
+                {% if 'ERROR: Translation for' in filterTitle %}
+                    {% set filterTitle = aggregation.title %}
+                {% endif %}
 
-            <section class="makaira-filter__filter makaira-filter__filter--{{ aggregation.type }}">
-                <header class="makaira-filter__filter-headline">{{ filterTitle }}</header>
-                {% include "@makaira_oxid-connect-frontend/filter/" ~ aggregation.type ~ ".html.twig" with {blShowDocCount: aggregation.showDocCount} %}
-                {% if not empty(aggregation.selectedValues) %}
-                    {% set showResetAll = true %}
-                    {#
+                <section class="makaira-filter__filter makaira-filter__filter--{{ aggregation.type }}">
+                    <header class="makaira-filter__filter-headline">{{ filterTitle }}</header>
+                    {% include "@makaira_oxid-connect-frontend/filter/" ~ aggregation.type ~ ".html.twig" with {blShowDocCount: aggregation.showDocCount} %}
+                    {% if not empty(aggregation.selectedValues) %}
+                        {% set showResetAll = true %}
+{#
  FIXME Handle filter reset with javascript instead of links
  <a href="{{ oViewConf.getFilterSeoLink(baseLink, aggregation.key) }}" class="marmFilterReset">{{ translate({ ident: "MAKAIRA_FILTER_RESET" }) }}</a>
  #}
-                {% endif %}
-            </section>
+                    {% endif %}
+                </section>
+            {% endif %}
         {% endfor %}
 
         {% if showResetAll %}

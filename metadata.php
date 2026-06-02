@@ -49,6 +49,15 @@ $aModule = [
         ['name' => 'makaira_connect_timeout', 'group' => 'SETTINGS', 'type' => 'num', 'value' => 2],
         ['name' => 'makaira_application_url', 'group' => 'SETTINGS', 'type' => 'str', 'value' => ''],
         ['name' => 'makaira_instance', 'group' => 'SETTINGS', 'type' => 'str', 'value' => 'live'],
+        [
+            'name' => 'makaira_sort_field_mapping',
+            'group' => 'SETTINGS',
+            'type' => 'aarr',
+            'value' => [
+                'OXTITLE' => 'title',
+                'OXPRICE' => 'price',
+            ]
+        ],
         ['name' => 'makaira_connect_activate_search', 'group' => 'SETTINGS', 'type' => 'bool', 'value' => false],
         ['name' => 'makaira_connect_activate_listing', 'group' => 'SETTINGS', 'type' => 'bool', 'value' => false],
         ['name' => 'makaira_connect_category_inheritance', 'group' => 'SETTINGS', 'type' => 'bool', 'value' => false],

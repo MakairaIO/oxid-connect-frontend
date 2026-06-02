@@ -89,7 +89,7 @@ class OxidSettings implements OxidSettingsInterface
 
     public function getCurrentViewClassName(): string
     {
-        return oxNew(ViewConfig::class)->getActiveClassName();
+        return oxNew(ViewConfig::class)->getTopActiveClassName();
     }
 
     public function getCurrentCurrency(): stdClass
