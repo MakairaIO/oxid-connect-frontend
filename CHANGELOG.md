@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/MakairaIO/oxid-connect-frontend/compare/1.1.0...1.1.1) (2026-06-02)
+
+
+### Bug Fixes
+
+* Filters do not work as intented ([#23](https://github.com/MakairaIO/oxid-connect-frontend/issues/23)) ([e721d5a](https://github.com/MakairaIO/oxid-connect-frontend/commit/e721d5a0f8fab52545d9b14475e191540898f50d))
+
 # [1.1.0](https://github.com/MakairaIO/oxid-connect-frontend/compare/1.0.4...1.1.0) (2025-12-05)
 
 
