@@ -41,6 +41,6 @@
     "semantic-release": "^17.4.2"
   },
   "dependencies": {
-    "nouislider": "^10.1.0"
+    "nouislider": "^15.0.0"
   }
 }
